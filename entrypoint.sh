@@ -14,21 +14,5 @@ readarray -t commands <<<"$x"
 for command in "${commands[@]}" ; do {
     echo "Running '$command'!"
 
-    # remove trailing whitespace
-    command="${command%"${command##*[![:space:]]}"}"
-
-    # Check for background process operator
-    # This wouldn't work here if we simply ran the command as is
-    if [ "${command: -1}" = "&" ]; then
-        echo "This is a background process (parallel command)"
-
-        # remove background process operator
-        newcommand=${command::-1}
-        
-        # execute command with background process operator added back in
-        $newcommand &
-    else
-        echo "This is a regular process (serial command)"
-        $command
-    fi
+    eval "$command"
 } done
