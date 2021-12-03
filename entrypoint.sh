@@ -8,14 +8,17 @@ export DISPLAY=:99.0
 export PUPPETEER_EXEC_PATH="google-chrome-stable"
 
 # Run commands
-for task in "$@"; do {
-    echo "Running '$task'!"
-    if [ "${task: -1}" = "&" ]; then
-        echo "This is a parallel task"
-        newtask=${task::-1}
-        $newtask &
+x="$@"
+readarray -t commands <<<"$x"
+
+for command in "${commands[@]}" ; do {
+    echo "Running '$command'!"
+    if [ "${command: -1}" = "&" ]; then
+        echo "This is a parallel command"
+        newcommand=${command::-1}
+        $newcommand &
     else
-        echo "This is a serial task"
-        $task
+        echo "This is a serial command"
+        $command
     fi
 } done
