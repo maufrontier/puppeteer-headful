@@ -13,12 +13,5 @@ readarray -t commands <<<"$x"
 
 for command in "${commands[@]}" ; do {
     echo "Running '$command'!"
-    if [ "${command: -1}" = "&" ]; then
-        echo "This is a parallel command"
-        newcommand=${command::-1}
-        $newcommand &
-    else
-        echo "This is a serial command"
-        $command
-    fi
+    $command
 } done
