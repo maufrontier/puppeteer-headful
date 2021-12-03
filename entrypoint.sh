@@ -11,10 +11,11 @@ export PUPPETEER_EXEC_PATH="google-chrome-stable"
 for task in "$@"; do {
     echo "Running '$task'!"
     if [ "${task: -1}" = "&" ]; then
+        echo "This is a parallel task"
         newtask=${task::-1}
         $newtask &
     else
+        echo "This is a serial task"
         $task
     fi
-    
 } done

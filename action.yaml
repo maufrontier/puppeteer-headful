@@ -2,21 +2,11 @@ name: 'Puppeteer Headful'
 description: 'Github Action for Puppeteer that can be ran "headful" or not headless.'
 inputs:
   command-1:
-    description: 'Command 1'
-    required: false
-    default: ''
-  command-2:
-    description: 'Command 2'
-    required: false
-    default: ''
-  command-3:
-    description: 'Command 3'
+    description: 'Commands'
     required: false
     default: ''
 runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
-    - ${{ inputs.command-1 }}
-    - ${{ inputs.command-2 }}
-    - ${{ inputs.command-3 }}
+    - ${{ inputs.commands }}
