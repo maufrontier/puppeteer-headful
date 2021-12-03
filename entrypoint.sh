@@ -10,4 +10,4 @@ export PUPPETEER_EXEC_PATH="google-chrome-stable"
 # Run commands
 readarray -t commands <<<"$@"
 
-eval "$@"
+bash -c "$@"
