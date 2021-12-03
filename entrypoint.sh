@@ -15,4 +15,5 @@ for command in "${commands[@]}" ; do {
     echo "Running '$command'!"
 
     eval "$command"
+    echo "with eval"
 } done
