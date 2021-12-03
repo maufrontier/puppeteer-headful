@@ -17,4 +17,6 @@ runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
-    - ${{ inputs.args }}
+    - ${{ inputs.parallel-command-1 }}
+    - ${{ inputs.parallel-command-2 }}
+    - ${{ inputs.parallel-command-3 }}
