@@ -1,7 +1,7 @@
 name: 'Puppeteer Headful'
 description: 'Github Action for Puppeteer that can be ran "headful" or not headless.'
 inputs:
-  command-1:
+  commands:
     description: 'Commands'
     required: false
     default: ''
