@@ -1,22 +1,22 @@
 name: 'Puppeteer Headful'
 description: 'Github Action for Puppeteer that can be ran "headful" or not headless.'
 inputs:
-  parallel-command-1:
-    description: 'Parallel command 1'
+  command-1:
+    description: 'Command 1'
     required: false
     default: ''
-  parallel-command-2:
-    description: 'Parallel command 2'
+  command-2:
+    description: 'Command 2'
     required: false
     default: ''
-  parallel-command-3:
-    description: 'Parallel command 3'
+  command-3:
+    description: 'Command 3'
     required: false
     default: ''
 runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
-    - ${{ inputs.parallel-command-1 }}
-    - ${{ inputs.parallel-command-2 }}
-    - ${{ inputs.parallel-command-3 }}
+    - ${{ inputs.command-1 }}
+    - ${{ inputs.command-2 }}
+    - ${{ inputs.command-3 }}
