@@ -8,13 +8,15 @@ export DISPLAY=:99.0
 export PUPPETEER_EXEC_PATH="google-chrome-stable"
 
 # Run commands
-cmd=$@
-echo "Running '$cmd'!"
-if $cmd; then
-    # no op
-    echo "Successfully ran '$cmd'"
-else
-    exit_code=$?
-    echo "Failure running '$cmd', exited with $exit_code"
-    exit $exit_code
-fi
+for task in "$@"; do {
+  echo "Running '$cmd'!"
+  $task &
+  if $task; then
+        # no op
+        echo "Successfully ran '$task'"
+    else
+        exit_code=$?
+        echo "Failure running '$task', exited with $exit_code"
+        exit $exit_code
+    fi
+} done
