@@ -8,12 +8,6 @@ export DISPLAY=:99.0
 export PUPPETEER_EXEC_PATH="google-chrome-stable"
 
 # Run commands
-x="$@"
-readarray -t commands <<<"$x"
+readarray -t commands <<<"$@"
 
-for command in "${commands[@]}" ; do {
-    echo "Running '$command'!"
-
-    eval "$command"
-    echo "with eval"
-} done
+eval "$@"
