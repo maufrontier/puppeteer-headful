@@ -10,5 +10,11 @@ export PUPPETEER_EXEC_PATH="google-chrome-stable"
 # Run commands
 for task in "$@"; do {
     echo "Running '$task'!"
-    $task
+    if [ "${task: -1}" = "&" ]; then
+        newtask=${task::-1}
+        $newtask &
+    else
+        $task
+    fi
+    
 } done
