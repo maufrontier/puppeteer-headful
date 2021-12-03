@@ -8,6 +8,4 @@ export DISPLAY=:99.0
 export PUPPETEER_EXEC_PATH="google-chrome-stable"
 
 # Run commands
-readarray -t commands <<<"$@"
-
 (eval "$@")
