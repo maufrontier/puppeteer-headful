@@ -1,4 +1,4 @@
-# Puppeteer Headful with commands
+# Puppeteer Headful with Commands
 
 #### Forked from the fantastic [Puppeteer Headful](https://github.com/mujo-code/puppeteer-headful), started and maintained by [Jacob Lowe](https://github.com/jcblw)
 

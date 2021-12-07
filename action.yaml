@@ -1,5 +1,5 @@
-name: 'Puppeteer Headful'
-description: 'Github Action for Puppeteer that can be ran "headful" or not headless.'
+name: 'Puppeteer Headful with Commands'
+description: 'Github Action that allows for Puppeteer to be run in "headful" mode (not headless).'
 inputs:
   commands:
     description: 'Commands'
