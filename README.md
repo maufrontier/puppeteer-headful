@@ -69,7 +69,7 @@ browser = await puppeteer.launch({
 
 ## Warnings
 
-For maximum freedom in running your commands, this action uses the eval bash command, which should be used with caution. To mitigate the risks, eval has been wrapped inside a subshell, but you should still proceed with caution and make sure you're the only one that passes commands to this action.
+For maximum freedom in running your commands, this action uses the *eval* bash command, which should be used with caution. To mitigate the risks, eval has been wrapped inside a subshell, but you should still proceed with caution and make sure you're the only one that passes commands to this action.
 
 ## License
 
