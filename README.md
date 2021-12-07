@@ -67,6 +67,10 @@ browser = await puppeteer.launch({
 });
 ```
 
+## Warnings
+
+For maximum freedom in running your commands, this action uses the eval bash command, which should be used with caution. To mitigate the risks, eval has been wrapped inside a subshell, but you should still proceed with caution and make sure you're the only one that passes commands to this action.
+
 ## License
 
 Like the original [Puppeteer Headful](https://github.com/mujo-code/puppeteer-headful), this fork is licensed under the MIT License. Check LICENSE.md for more information.
