@@ -66,3 +66,7 @@ browser = await puppeteer.launch({
   ...
 });
 ```
+
+## License
+
+Like the original [Puppeteer Headful](https://github.com/mujo-code/puppeteer-headful), this fork is licensed under the MIT License. Check LICENSE.md for more information.
