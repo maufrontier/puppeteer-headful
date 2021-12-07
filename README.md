@@ -1,4 +1,6 @@
-# Puppeteer Headful
+# Puppeteer Headful with commands
+
+#### Forked from the fantastic [Puppeteer Headful](https://github.com/mujo-code/puppeteer-headful), started and maintained by [Jacob Lowe](https://github.com/jcblw)
 
 [Github Action](https://github.com/features/actions) for [Puppeteer](https://github.com/GoogleChrome/puppeteer) that can be ran "headful" or not headless.
 
@@ -8,31 +10,48 @@
 
 This container is available to Github Action because there is some situations ( mostly testing [Chrome Extensions](https://pptr.dev/#?product=Puppeteer&version=v1.18.1&show=api-working-with-chrome-extensions) ) where you can not run Puppeteer in headless mode.
 
+## Purpose of this fork
+
+This fork features an action.yaml and allows you to pass multiple bash commands, including operators like the background process operator (&).
+
+This is particularly useful when you need to first start a server and leave it running as a background process, so you can then issue commands that interact with the pages being served.
+
 ## Usage
 
-This installs Puppeteer ontop of a [NodeJS](https://nodejs.org) container so you have access to run [npm](https://www.npmjs.com) scripts using args. For this hook we hyjack the entrypoint of the [Dockerfile](https://docs.docker.com/engine/reference/builder/) so we can startup [Xvfb](https://www.x.org/releases/X11R7.6/doc/man/man1/Xvfb.1.xhtml) before your testing starts.
+This installs Puppeteer on top of a [NodeJS](https://nodejs.org) container so you have access to run [npm](https://www.npmjs.com) scripts and bash commands in general.
+
+For this hook we hyjack the entrypoint of the [Dockerfile](https://docs.docker.com/engine/reference/builder/) so we can startup [Xvfb](https://www.x.org/releases/X11R7.6/doc/man/man1/Xvfb.1.xhtml) before your testing starts.
 
 ```yaml
 name: CI
 on: push
 jobs:
-  installDependencies:
-    name: Install Dependencies
+  build-and-test:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@Z
-    - name: Install Dependencies
-      uses: actions/setup-node@v2
-      env:
-        PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: 'true'
-      with:
-        args: install
-    - name: Test Code
-      uses: mujo-code/puppeteer-headful@v2
-      env:
-        CI: 'true'
-      with:
-        args: npm test
+      - name: Checkout
+        uses: actions/checkout@v2
+      
+      - name: Use Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '15.x'
+          cache: 'npm'
+        env:
+          PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: 'true'
+      
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Initialize headful puppeteer
+        uses: maufrontier/puppeteer-headful@v3
+        env:
+          CI: 'true'
+        with:
+          commands: |
+            npx http-server e2e &
+            sleep 10
+            npm run e2e
 ```
 
 > Note: You will need to let Puppeteer know not to download Chromium. By setting the env of your install task to PUPPETEER_SKIP_CHROMIUM_DOWNLOAD = 'true' so it does not install conflicting versions of Chromium.
