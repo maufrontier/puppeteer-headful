@@ -2,7 +2,7 @@ name: 'Puppeteer Headful with Commands'
 author: Mau Frontier (forked from an action by Jacob Lowe)
 description: 'Github Action that allows for Puppeteer to be run in headful mode, passing complex bash commands'
 branding:
-  icon: 'monitor' 
+  icon: 'layout' 
   color: 'purple'
 inputs:
   commands:
