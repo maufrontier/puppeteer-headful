@@ -1,6 +1,6 @@
 name: 'Puppeteer Headful with Commands'
 author: Mau Frontier (forked from an action by Jacob Lowe)
-description: 'Github Action that allows for Puppeteer to be run in "headful" mode (not headless), and allows you to pass multiple bash commands, including operators like the background process operator (&).'
+description: 'Github Action that allows for Puppeteer to be run in "headful" mode (not headless), and allows you to pass bash commands including operators like the background process operator (&).'
 inputs:
   commands:
     description: 'Commands'

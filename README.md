@@ -1,6 +1,6 @@
 # Puppeteer Headful with Commands
 
-#### Forked from the fantastic [Puppeteer Headful](https://github.com/mujo-code/puppeteer-headful), started and maintained by [Jacob Lowe](https://github.com/jcblw)
+#### Forked from the fantastic [Puppeteer Headful](https://github.com/mujo-code/puppeteer-headful), started and maintained by [Jacob Lowe](https://github.com/jcblw).
 
 [Github Action](https://github.com/features/actions) for [Puppeteer](https://github.com/GoogleChrome/puppeteer) that can be ran "headful" or not headless.
 
@@ -12,9 +12,9 @@ This container is available to Github Action because there is some situations ( 
 
 ## Purpose of this fork
 
-This fork features an action.yaml and allows you to pass multiple bash commands, including operators like the background process operator (&).
+This fork features an action.yaml, uses bash, and allows you to pass complex shell commands including operators like the background process operator (&).
 
-This is particularly useful when you need to first start a server and leave it running as a background process, so you can then issue commands that interact with the pages being served.
+This is particularly useful when you need to first start a server and leave it running as a background process, so you can then issue commands that interact with the pages being served (see example below).
 
 ## Usage
 
@@ -49,9 +49,9 @@ jobs:
           CI: 'true'
         with:
           commands: |
-            npx http-server e2e &
+            npx http-server ./public &
             sleep 10
-            npm run e2e
+            npm run e2e-tests
 ```
 
 > Note: You will need to let Puppeteer know not to download Chromium. By setting the env of your install task to PUPPETEER_SKIP_CHROMIUM_DOWNLOAD = 'true' so it does not install conflicting versions of Chromium.
@@ -69,7 +69,7 @@ browser = await puppeteer.launch({
 
 ## Warnings
 
-For maximum freedom in running your commands, this action uses the *eval* bash command, which should be used with caution because any commands that are passed to the action will be executed in the context of the container.
+For maximum freedom in running your shell commands, this action runs your commands via *eval*, which should be used with caution because any commands that are passed to the action will be executed in the context of the container.
 
 To mitigate the risks, eval has been wrapped inside a subshell, but you should still proceed with caution and make sure you're the only one that passes commands to this action.
 
