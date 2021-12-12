@@ -41,7 +41,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Initialize headful puppeteer
+      - name: Perform e2e tests with Heaful Puppeteer
         uses: maufrontier/puppeteer-headful@v3
         env:
           CI: 'true'
@@ -70,6 +70,18 @@ browser = await puppeteer.launch({
 For maximum freedom in running your shell commands, this action runs your commands via *eval*, which should be used with caution because any commands that are passed to the action will be executed in the context of the container.
 
 To mitigate the risks, eval has been wrapped inside a subshell, but you should still proceed with caution and make sure you're the only one that passes commands to this action.
+
+## Versioning
+
+Starting with version 3.0.0, you can use a specific version of the action by referencing the exact semver number:
+
+    - name: Perform e2e tests with Heaful Puppeteer
+      uses: maufrontier/puppeteer-headful@3.0.0
+
+Each major version after v3 also has its own branch, so if you want to use the latest minor version within a major version, you can reference the branch:
+
+    - name: Perform e2e tests with Heaful Puppeteer
+      uses: maufrontier/puppeteer-headful@v3
 
 ## License
 
