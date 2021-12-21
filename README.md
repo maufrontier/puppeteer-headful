@@ -1,24 +1,18 @@
 # Puppeteer Headful with Commands
 
-#### Forked from the fantastic [Puppeteer Headful](https://github.com/mujo-code/puppeteer-headful), started and maintained by [Jacob Lowe](https://github.com/jcblw).
+This Github Action allows you to run [Puppeteer](https://github.com/GoogleChrome/puppeteer) in headful mode (not headless)—which is crucial for testing [Chrome Extensions](https://pptr.dev/#?product=Puppeteer&version=v1.18.1&show=api-working-with-chrome-extensions)—and to pass in shell commands to be executed.
 
-[Github Action](https://github.com/features/actions) for [Puppeteer](https://github.com/GoogleChrome/puppeteer) that can be ran "headful" or not headless.
-
-## Purpose
-
-This container is available to Github Action because there is some situations ( mostly testing [Chrome Extensions](https://pptr.dev/#?product=Puppeteer&version=v1.18.1&show=api-working-with-chrome-extensions) ) where you can not run Puppeteer in headless mode.
+*Forked from the fantastic [Puppeteer Headful](https://github.com/mujo-code/puppeteer-headful), started and maintained by [Jacob Lowe](https://github.com/jcblw).*
 
 ## Purpose of this fork
 
-This fork features an action.yaml, uses bash, and allows you to pass complex shell commands including operators like the background process operator (&).
+This fork features an action.yaml, uses bash, and allows you to pass more complex shell commands including operators like the background process operator (&).
 
-This is particularly useful when you need to first start a server and leave it running as a background process, so you can then issue commands that interact with the pages being served (see example below).
+This is particularly useful when you need to first start a server and leave it running as a background process so you can then issue commands that interact with the pages being served (see example below).
 
 ## Usage
 
 This installs Puppeteer on top of a [NodeJS](https://nodejs.org) container so you have access to run [npm](https://www.npmjs.com) scripts and bash commands in general.
-
-For this hook we hyjack the entrypoint of the [Dockerfile](https://docs.docker.com/engine/reference/builder/) so we can startup [Xvfb](https://www.x.org/releases/X11R7.6/doc/man/man1/Xvfb.1.xhtml) before your testing starts.
 
 ```yaml
 name: CI
@@ -52,20 +46,62 @@ jobs:
             npm run e2e-tests
 ```
 
-> Note: You will need to let Puppeteer know not to download Chromium. By setting the env of your install task to PUPPETEER_SKIP_CHROMIUM_DOWNLOAD = 'true' so it does not install conflicting versions of Chromium.
+## Setup
 
-Then you will need to change the way you launch Puppeteer. We export out a nifty ENV variable `PUPPETEER_EXEC_PATH` that you set at your `executablePath`. This should be undefined locally so it should function perfectly fine locally and on the action.
+#### Step 1 - Launch node, skipping Chromium Download
+
+Notice the PUPPETEER_SKIP_CHROMIUM_DOWNLOAD = 'true' line. This prevents Puppeteer from downloading conflicting Chromium binaries.
+
+```yaml
+- name: Use Node.js
+  uses: actions/setup-node@v2
+  with:
+    node-version: '15.x'
+    cache: 'npm'
+  env:
+    PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: 'true'
+```
+
+#### Step 2 - Call the action (with an optional command)
+
+```yaml
+- name: Perform e2e tests with Heaful Puppeteer
+  uses: maufrontier/puppeteer-headful@v3
+  env:
+    CI: 'true'
+  with:
+    commands: |
+      npx http-server ./public &
+      sleep 10
+      npm run e2e-tests
+```
+
+#### Step 3 - Launch Puppeteer with the right exec path
+
+##### Option A) Easiest method
+
+Use the [puppeteer-test-browser-extension](https://www.npmjs.com/package/puppeteer-test-browser-extension) module to launch Puppeteer with all the right settings to test Chrome extensions with this Action.
+
+##### Option B) Manual method
+
+If you'd like to launch Puppeteer manually, make sure you pass the ENV variable  `PUPPETEER_EXEC_PATH` as the value for the `executablePath` option.
+
+This will ensure that Puppeteer uses the right binary when using this Github Action, and in your local environment the variable should be undefined, so it'll be ignored.
 
 ```javascript
 browser = await puppeteer.launch({
-  args: ['--no-sandbox'],
   executablePath: process.env.PUPPETEER_EXEC_PATH, // set by docker container
   headless: false,
+  args: [
+    `--load-extension=${pathToYourExtension}`,
+    `--disable-extensions-except=${pathToYourExtension}`,
+    '--no-sandbox',
+  ],
   ...
 });
 ```
 
-## Warnings
+## Considerations
 
 For maximum freedom in running your shell commands, this action runs your commands via *eval*, which should be used with caution because any commands that are passed to the action will be executed in the context of the container.
 
@@ -82,6 +118,16 @@ Each major version after v3 also has its own branch, so if you want to use the l
 
     - name: Perform e2e tests with Heaful Puppeteer
       uses: maufrontier/puppeteer-headful@v3
+
+## Website:
+
+- **Github**: [puppeteer-test-browser-extension](https://github.com/maufrontier/puppeteer-headful-with-commands) by [MauFrontier](https://github.com/maufrontier)
+- **GitHub Actions Marketplace**: [puppeteer-test-browser-extension](https://github.com/marketplace/actions/puppeteer-headful-with-commands)
+- **Inspiration**: [Puppeteer Headful](https://github.com/mujo-code/puppeteer-headful), started and maintained by [Jacob Lowe](https://github.com/jcblw)
+
+## Recommended pairing:
+
+- **NPM Module**: [puppeteer-test-browser-extension](https://www.npmjs.com/package/puppeteer-test-browser-extension) — Launch Puppeteer with all the right settings to test Chrome extensions with this Action.
 
 ## License
 
